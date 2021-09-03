@@ -23,4 +23,21 @@ async function validateProjectId(req, res, next) {
     }
 }
 
-module.exports = { logger, validateProjectId }
+async function validateNewProject(req, res, next) {
+    const { name, description } = req.body
+    try {
+        if (!name || !name.trim() || !description || !description.trim()) {
+            next({ status: 400 })
+        }
+        else {
+            req.name = name.trim()
+            req.description = description.trim()
+            next()
+        }
+    }
+    catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { logger, validateProjectId, validateNewProject }
