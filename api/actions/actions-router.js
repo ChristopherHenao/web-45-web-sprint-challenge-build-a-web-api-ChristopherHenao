@@ -33,8 +33,14 @@ router.put('/:id', (req, res, next) => {
     res.json('put actions is working')
 })
 
-router.delete('/:id', (req, res, next) => {
-    res.json('delete actions is working')
+router.delete('/:id', validateActionsId, async (req, res, next) => {
+    try {
+        await Actions.remove(req.params.id)
+        res.status(200)
+    }
+    catch (error) {
+        next(error)
+    }
 })
 
 

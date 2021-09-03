@@ -29,7 +29,7 @@ async function validateNewAction(req, res, next) {
             next({ status: 400 })
         }
         else if (!project) {
-            next({ status: 400 })
+            next({ status: 404 })
         }
         else {
             next()
