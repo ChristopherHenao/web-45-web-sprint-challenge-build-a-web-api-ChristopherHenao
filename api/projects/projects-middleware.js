@@ -23,7 +23,7 @@ async function validateProjectId(req, res, next) {
     }
 }
 
-async function validateNewProject(req, res, next) {
+function validateNewProject(req, res, next) {
     const { name, description } = req.body
     try {
         if (!name || !name.trim() || !description || !description.trim()) {
@@ -40,4 +40,24 @@ async function validateNewProject(req, res, next) {
     }
 }
 
-module.exports = { logger, validateProjectId, validateNewProject }
+function validateExistingProject(req, res, next) {
+    const { name, description, completed} = req.body
+    try {
+        if (!name || !name.trim() || !description || !description.trim()) {
+            next({ status: 400 })
+        }
+        else if (typeof completed !== 'boolean') {
+            next({ status: 400 })
+        }
+        else {
+            req.name = name.trim()
+            req.description = description.trim()
+            next()
+        }
+    }
+    catch (error) {
+        next(error)
+    }
+} 
+
+module.exports = { logger, validateProjectId, validateNewProject, validateExistingProject }
