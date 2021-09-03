@@ -39,8 +39,14 @@ router.put('/:id', validateProjectId, validateExistingProject, async (req, res, 
     }
 })
 
-router.delete('/:id', (req, res, next) => {
-    res.json("delete projects is working")
+router.delete('/:id', validateProjectId, async (req, res, next) => {
+    try {
+        await Projects.remove(req.params.id)
+        res.status(200)
+    }
+    catch (error) {
+        next(error)
+    }
 })
 
 router.get('/:id/actions', (req, res, next) => {
