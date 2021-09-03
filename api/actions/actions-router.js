@@ -42,7 +42,7 @@ router.put('/:id', validateActionsId, validateExistingAction, async (req, res, n
 router.delete('/:id', validateActionsId, async (req, res, next) => {
     try {
         await Actions.remove(req.params.id)
-        res.status(200)
+        res.status(200).json('deletion done')
     }
     catch (error) {
         next(error)
