@@ -1,4 +1,5 @@
 // add middlewares here related to projects
+const Projects = require('./projects-model')
 
 
 function logger(req, res, next) {
@@ -6,4 +7,20 @@ function logger(req, res, next) {
     next()
 }
 
-module.exports = { logger }
+async function validateProjectId(req, res, next) {
+    const project = await Projects.get(req.params.id)
+    try {
+        if (!project) {
+            next({ status: 404 })
+        }
+        else {
+            req.project = project
+            next()
+        }
+    }
+    catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { logger, validateProjectId }
