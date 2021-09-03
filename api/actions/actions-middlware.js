@@ -40,4 +40,29 @@ async function validateNewAction(req, res, next) {
     }
 }
 
-module.exports = { validateActionsId, validateNewAction }
+async function validateExistingAction(req, res, next) {
+    const { project_id, description, notes, completed } = req.body
+    const project = await Projects.get(project_id)
+    try {
+        if (!description || !notes || !project_id) {
+            next({ status: 400 })
+        }
+        else if (description.length > 128) {
+            next({ status: 400 })
+        }
+        else if (!project) {
+            next({ status: 404 })
+        }
+        else if (typeof completed !== 'boolean') {
+            next({ status: 404 })
+        }
+        else {
+            next()
+        }
+    }
+    catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { validateActionsId, validateNewAction, validateExistingAction }
