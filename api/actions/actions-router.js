@@ -4,8 +4,14 @@ const Actions = require('./actions-model')
 
 const router = express.Router()
 
-router.get('/', (req, res, next) => {
-    res.json('get actions is working')
+router.get('/', async (req, res, next) => {
+    const actions = await Actions.get()
+    try {
+        res.json(actions)
+    }
+    catch (error) {
+        next(error)
+    }
 })
 
 router.get('/:id', (req, res, next) => {
